@@ -29,36 +29,38 @@ NS = {'x':'urn:oasis:names:tc:xliff:document:1.2'}
 
 # Files we are interested in. It would be nice to not hardcode this but I'm not totally sure how yet.
 FILES = [
-    "Client/3DTouchActions.strings",
-    "Client/AuthenticationManager.strings",
-    "Client/BookmarkPanel.strings",
-    "Client/BookmarkPanelDeleteConfirm.strings",
-    "Client/ClearHistoryConfirm.strings",
-    "Client/ClearPrivateData.strings",
-    "Client/ClearPrivateDataConfirm.strings",
-    "Client/ErrorPages.strings",
-    "Client/FindInPage.strings",
-    "Client/HistoryPanel.strings",
-    "Client/Info.plist",
-    "Client/Intro.strings",
-    "Client/LightweightThemes.strings",
-    "Client/Localizable.strings",
-    "Client/LoginManager.strings",
-    "Client/Menu.strings",
-    "Client/PrivateBrowsing.strings",
-    "Client/Search.strings",
-    "Client/SendTo.strings",
-    "Client/SendAnonymousUsageData.strings",
-    "Client/Shared.strings",
-    "Client/Storage.strings",
-    "Extensions/NotificationService/Localizable.strings",
-    "Extensions/ShareTo/Localizable.strings",
-    "Extensions/Today/Today.strings",
-    "Extensions/ShareTo/3DTouchActions.strings",
-    "Extensions/ShareTo/SendTo.strings",
-    "Shared/Localizable.strings",
-    "Client/Default Browser.strings",
-    "Client/Today.strings",
+    "Client/en.lproj/InfoPlist.strings",
+    "Shared/en.lproj/3DTouchActions.strings",
+    "Shared/en.lproj/AuthenticationManager.strings",
+    "Shared/en.lproj/ClearHistoryConfirm.strings",
+    "Shared/en.lproj/ClearPrivateData.strings",
+    "Shared/en.lproj/ClearPrivateDataConfirm.strings",
+    "Shared/en.lproj/Default Browser.strings",
+    "Shared/en.lproj/ErrorPages.strings",
+    "Shared/en.lproj/FindInPage.strings",
+    "Shared/en.lproj/HistoryPanel.strings",
+    "Shared/en.lproj/Intro.strings",
+    "Shared/en.lproj/Localizable.strings",
+    # "Client/LightweightThemes.strings",
+    # "Client/Localizable.strings",
+    "Shared/en.lproj/LoginManager.strings",
+    "Shared/en.lproj/Menu.strings",
+    "Shared/en.lproj/PrivateBrowsing.strings",
+    "Shared/en.lproj/Search.strings",
+    # "Client/SendTo.strings",
+    # "Client/SendAnonymousUsageData.strings",
+    "Shared/en.lproj/Shared.strings",
+    "Shared/en.lproj/Storage.strings",
+    # "Extensions/NotificationService/Localizable.strings",
+    # "Extensions/ShareTo/Localizable.strings",
+    # "Extensions/Today/Today.strings",
+    # "Extensions/ShareTo/3DTouchActions.strings",
+    # "Extensions/ShareTo/SendTo.strings",
+    "Shared/en.lproj/Today.strings",
+    "Shared/Supporting Files/en.lproj/BookmarkPanel.strings",
+    "Shared/Supporting Files/en.lproj/BookmarkPanelDeleteConfirm.strings",
+    "WidgetKit/Base.lproj/WidgetIntents.intentdefinition",
+    "WidgetKit/en.lproj/Localizable.strings"
 ]
 
 # Because Xcode is unpredictable. See bug 1162510 - Sync.strings are not imported
@@ -108,11 +110,11 @@ def export_xliff_file(file_node, export_path, target_language):
                 notes = trans_unit_node.xpath("x:note", namespaces=NS)
                 if len(notes) == 1:
                     line = u"/* %s */\n" % notes[0].text
-                    fp.write(line.encode("utf8"))
+                    fp.write(line)
                 source_text = trans_unit_id.replace('"', '\\"')
                 target_text = targets[0].text.replace('"', '\\"')
                 line = u"\"%s\" = \"%s\";\n\n" % (source_text, target_text)
-                fp.write(line.encode("utf8"))
+                fp.write(line)
 
     # Export fails if the strings file is empty. Xcode probably checks
     # on file length vs read error.
@@ -125,7 +127,7 @@ def original_path(root, target, original):
     if file == "Info.plist":
         file = "InfoPlist.strings"
     lproj = "%s.lproj" % target_language
-    path = dir + "/" + lproj + "/" + file
+    path = dir.replace("/en.lproj", '').replace("/Base.lproj", '') + "/" + lproj + "/" + file
     return path
 
 if __name__ == "__main__":

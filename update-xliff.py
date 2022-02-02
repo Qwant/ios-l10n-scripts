@@ -179,10 +179,8 @@ def main():
             # Fix indentations
             indent(reference_root)
             xliff_content = etree.tostring(
-                                reference_tree,
-                                encoding='UTF-8',
-                                xml_declaration=True,
-                                pretty_print=True
+                                reference_tree, 
+                                encoding='unicode'
                             )
             fp.write(xliff_content)
 

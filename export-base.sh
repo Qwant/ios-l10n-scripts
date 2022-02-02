@@ -11,7 +11,7 @@ if [ -d firefoxios-l10n ]; then
 fi
 
 # Check out a clean copy of the l10n repo
-git clone https://github.com/mozilla-l10n/firefoxios-l10n
+git clone https://github.com/Qwant/firefoxios-l10n
 
 # Export English base to /tmp/en.xliff
 rm -f /tmp/en.xliff

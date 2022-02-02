@@ -72,7 +72,7 @@ else
 fi
 
 # Check out a clean copy of the l10n repo
-git clone https://github.com/mozilla-l10n/${l10n_repo} || exit 1
+git clone https://github.com/Qwant/${l10n_repo} || exit 1
 
 # Export English base to /tmp/en.xliff
 rm -f /tmp/en.xliff || exit 1

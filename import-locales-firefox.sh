@@ -25,7 +25,7 @@ if [ ! -d import-locales-env ] || [ "${clean_run}" = true ]
 then
     rm -rf import-locales-env || exit 1
     echo "Setting up new virtualenv..."
-    virtualenv import-locales-env --python=python2.7 || exit 1
+    virtualenv import-locales-env --python=python3 || exit 1
     source import-locales-env/bin/activate || exit 1
     # install libxml2
     CFLAGS=-I"$SDK_PATH/usr/include/libxml2" LIBXML2_VERSION=2.9.2 pip install lxml==4.1.1 || exit 1
@@ -36,7 +36,7 @@ fi
 
 echo "Creating firefoxios-l10n Git repo"
 rm -rf firefoxios-l10n 
-git clone --depth 1 https://github.com/mozilla-l10n/firefoxios-l10n firefoxios-l10n || exit 1
+git clone --depth 1 https://github.com/Qwant/firefoxios-l10n -b qwantjunior-main || exit 1
 
 # Store current relative path to the script
 script_path=$(dirname "$0")

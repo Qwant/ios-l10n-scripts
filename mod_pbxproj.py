@@ -41,9 +41,10 @@ import re
 import shutil
 import subprocess
 import uuid
+import collections
 
-from UserDict import IterableUserDict
-from UserList import UserList
+from collections import UserDict
+from collections import UserList
 
 regex = '[a-zA-Z0-9\\._/-]*'
 
@@ -58,15 +59,15 @@ class PBXEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, obj)
 
 
-class PBXDict(IterableUserDict):
+class PBXDict(UserDict):
     def __init__(self, d=None):
         if d:
             d = dict([(PBXType.Convert(k), PBXType.Convert(v)) for k, v in d.items()])
 
-        IterableUserDict.__init__(self, d)
+        UserDict.__init__(self, d)
 
     def __setitem__(self, key, value):
-        IterableUserDict.__setitem__(self, PBXType.Convert(key), PBXType.Convert(value))
+        UserDict.__setitem__(self, PBXType.Convert(key), PBXType.Convert(value))
 
     def remove(self, key):
         self.data.pop(PBXType.Convert(key), None)
@@ -127,7 +128,7 @@ class PBXType(PBXDict):
             if cls and issubclass(cls, PBXType):
                 return cls(o)
 
-            print 'warning: unknown PBX type: %s' % isa
+            print('warning: unknown PBX type: %s' % isa)
             return PBXDict(o)
         else:
             return o
@@ -204,8 +205,8 @@ class PBXFileReference(PBXType):
         self.build_phase = build_phase
 
         if f_type == '?' and not ignore_unknown_type:
-            print 'unknown file extension: %s' % ext
-            print 'please add extension and Xcode type to PBXFileReference.types'
+            print('unknown file extension: %s' % ext)
+            print('please add extension and Xcode type to PBXFileReference.types')
 
         return f_type
 
@@ -218,7 +219,7 @@ class PBXFileReference(PBXType):
     @classmethod
     def Create(cls, os_path, name=None, tree='SOURCE_ROOT', ignore_unknown_type=False):
         if tree not in cls.trees:
-            print 'Not a valid sourceTree type: %s' % tree
+            print('Not a valid sourceTree type: %s' % tree)
             return None
 
         fr = cls()
@@ -617,7 +618,7 @@ class XcodeProject(PBXDict):
             root_group_id = self.root_object.get('mainGroup')
             self.root_group = self.objects[root_group_id]
         else:
-            print "error: project has no root object"
+            print("error: project has no root object")
             self.root_object = None
             self.root_group = None
 
@@ -1080,10 +1081,10 @@ class XcodeProject(PBXDict):
 
     def apply_patch(self, patch_path, xcode_path):
         if not os.path.isfile(patch_path) or not os.path.isdir(xcode_path):
-            print 'ERROR: couldn\'t apply "%s" to "%s"' % (patch_path, xcode_path)
+            print('ERROR: couldn\'t apply "%s" to "%s"' % (patch_path, xcode_path))
             return
 
-        print 'applying "%s" to "%s"' % (patch_path, xcode_path)
+        print('applying "%s" to "%s"' % (patch_path, xcode_path))
 
         return subprocess.call(['patch', '-p1', '--forward', '--directory=%s' % xcode_path, '--input=%s' % patch_path])
 
@@ -1481,7 +1482,7 @@ class XcodeProject(PBXDict):
 
         # If the plist was malformed, returncode will be non-zero
         if p.returncode != 0:
-            print stdout
+            print(stdout)
             return None
 
         tree = plistlib.readPlistFromString(stdout)
