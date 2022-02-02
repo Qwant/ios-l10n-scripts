@@ -87,23 +87,23 @@ def get_or_add_variant_group(project, name, parent_group, phase):
 if __name__ == "__main__":
     project = XcodeProject.Load("Client.xcodeproj/project.pbxproj")
     if not project:
-        print "Can't open ", "Client.xcodeproj/project.pbxproj"
+        print("Can't open ", "Client.xcodeproj/project.pbxproj")
         sys.exit(1)
 
     for target_name in TARGETS.keys():
         target = find_target(project, target_name)
         if not target:
-            print "Can't find target ", target_name
+            print("Can't find target ", target_name)
             sys.exit(1)
 
         parent_group = find_group(project, target_name)
         if not parent_group:
-            print "Can't find group ", target_name
+            print("Can't find group ", target_name)
             sys.exit(1)
 
         phase = find_resources_phase(project, target)
         if not phase:
-            print "Can't find 'PBXResourcesBuildPhase' phase for target ", target_name
+            print("Can't find 'PBXResourcesBuildPhase' phase for target ", target_name)
             sys.exit(1)
 
         if target and parent_group and phase:
@@ -112,7 +112,7 @@ if __name__ == "__main__":
                 if locale_name in LOCALES_TO_SKIP:
                     continue
 
-                print "%s (%s): %s" % (target_name, locale_name, path)
+                print("%s (%s): %s" % (target_name, locale_name, path))
                 file_name = os.path.basename(path)
 
                 variant_group = get_or_add_variant_group(project, file_name, parent_group, phase)

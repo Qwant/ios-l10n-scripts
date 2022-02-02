@@ -109,9 +109,7 @@ if __name__ == '__main__':
         with open(path, 'w') as fp:
             indent(root)
             xliff_content = etree.tostring(
-                                tree,
-                                encoding='UTF-8',
-                                xml_declaration=True,
-                                pretty_print=True
+                                tree, 
+                                encoding='unicode'
                             )
             fp.write(xliff_content)
